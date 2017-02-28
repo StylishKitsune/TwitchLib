@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -66,6 +67,20 @@ namespace TwitchLib.TwitchAPI
         /// </summary>
         public static class Users
         {
+            /// <summary>
+            /// [SYNC] Gets a user given their userid
+            /// </summary>
+            /// <param name="userid">String representing a user's id</param>
+            /// <returns></returns>
+            public static Models.API.v5.User GetUser(string userid) => Task.Run(() => Internal.TwitchApi.GetUserV5(userid)).Result;
+
+            /// <summary>
+            /// [ASYNC] Gets a user given their userid
+            /// </summary>
+            /// <param name="userid">String representing a user's id</param>
+            /// <returns></returns>
+            public static async Task<Models.API.v5.User> GetUserAsync(string userid) => await Internal.TwitchApi.GetUserV5(userid);
+
             /// <summary>
             /// [SYNC] Fetches a list of user objects given their usernames.
             /// </summary>

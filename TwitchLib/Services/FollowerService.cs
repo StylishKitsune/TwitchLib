@@ -21,7 +21,7 @@ namespace TwitchLib.Services
         /// <summary>Property representing Twitch channel service is monitoring.</summary>
         public string Channel { get { return _channel; } protected set { _channel = value; } }
         /// <summary>Property representing application client Id, also updates it in TwitchApi.</summary>
-        public string ClientId { get { return _clientId; } set { _clientId = value; TwitchApi.SetClientId(value); } }
+        public string ClientId { get { return _clientId; } set { _clientId = value; TwitchAPI.Shared.SetClientId(value); } }
         /// <summary>Property representing the number of followers to compare a fresh query against for new followers. Default: 1000.</summary>
         public int CacheSize { get; set; } = 1000;
         /// <summary>Property representing number of recent followers that service should request. Recommended: 25, increase for larger channels. MAX: 100, MINIMUM: 1</summary>
@@ -52,7 +52,7 @@ namespace TwitchLib.Services
         /// <summary>Downloads recent followers from Twitch, starts service, fires OnServiceStarted event.</summary>
         public async void StartService()
         {
-            Models.API.Follow.FollowersResponse response = await TwitchApi.Follows.GetFollowersAsync(Channel, QueryCount);
+            Models.API.Follow.FollowersResponse response = await TwitchAPI.v3.Follows.GetFollowersAsync(Channel, QueryCount);
             ActiveCache = response.Followers;
             _followerServiceTimer.Start();
             OnServiceStarted?.Invoke(this, 
@@ -73,7 +73,7 @@ namespace TwitchLib.Services
             Models.API.Follow.FollowersResponse response;
             try
             {
-                response = await TwitchApi.Follows.GetFollowersAsync(Channel, QueryCount);
+                response = await TwitchAPI.v3.Follows.GetFollowersAsync(Channel, QueryCount);
             }
             catch (WebException)
             {
